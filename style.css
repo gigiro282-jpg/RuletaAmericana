@@ -1,0 +1,6 @@
+body{margin:0;background:#0b4d2a;font-family:Arial;color:#fff;text-align:center}h1{color:gold}#ruleta{width:900px;height:900px;border-radius:50%;margin:20px auto;position:relative;background:#222;border:12px solid gold}.num{position:absolute;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:22px;color:#fff;cursor:pointer}.off{
+    background: yellow !important;
+    color: black !important;
+    transform: scale(1.15);
+    box-shadow: 0 0 18px yellow;
+}
