@@ -1,6 +1,43 @@
 body{margin:0;background:#0b4d2a;font-family:Arial;color:#fff;text-align:center}h1{color:gold}#ruleta{width:900px;height:900px;border-radius:50%;margin:20px auto;position:relative;background:#222;border:12px solid gold}.num{position:absolute;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:22px;color:#fff;cursor:pointer}.off{
-    background: yellow !important;
-    color: black !important;
-    transform: scale(1.15);
-    box-shadow: 0 0 18px yellow;
+    filter:none;
+    opacity:1;
+    background:#FFD700 !important;
+    color:black !important;
+    border:3px solid #ff9800;
+}
+
+#modos{
+    margin:15px;
+}
+#modo18,#modoManual{
+    padding:10px 18px;
+    margin:0 8px 15px;
+    font-size:18px;
+    font-weight:bold;
+    border-radius:8px;
+    cursor:pointer;
+}
+#modo18{
+    background:#FFD700;
+}
+#modoManual{
+    background:#ddd;
+}
+
+
+#limpiar{
+    display:block;
+    margin:20px auto 30px;
+    width:320px;
+    padding:16px 0;
+    font-size:24px;
+    font-weight:bold;
+    border:none;
+    border-radius:12px;
+    background:#ff5722;
+    color:white;
+    cursor:pointer;
+}
+#limpiar:hover{
+    background:#e64a19;
 }
