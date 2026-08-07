@@ -9,13 +9,17 @@ body{margin:0;background:#0b4d2a;font-family:Arial;color:#fff;text-align:center}
 #modos{
     margin:15px;
 }
-#modo18,#modoManual{
+#modo18,#modoManual,#modoFiguras{
     padding:10px 18px;
     margin:0 8px 15px;
     font-size:18px;
     font-weight:bold;
     border-radius:8px;
     cursor:pointer;
+}
+
+#modoFiguras{
+    background:#87CEEB;
 }
 #modo18{
     background:#FFD700;
