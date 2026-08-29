@@ -80,9 +80,11 @@ let modo='18';
 const b18=document.getElementById('modo18');
 const bManual=document.getElementById('modoManual');
 const bFiguras=document.getElementById('modoFiguras');
+const b10x10=document.getElementById('modo10x10');
 if(b18) b18.onclick=()=>modo='18';
 if(bManual) bManual.onclick=()=>modo='manual';
 if(bFiguras) bFiguras.onclick=()=>modo='figuras';
+if(b10x10) b10x10.onclick=()=>modo='10x10';
 
 const r=document.getElementById('ruleta');const c=450,rad=390;orden.forEach((n,i)=>{let d=document.createElement('div');d.className='num';d.textContent=n;d.style.background=(n==='0'||n==='00')?'green':(rojos.has(n)?'#c40000':'black');d.dataset.baseColor=d.style.background;let a=i/38*2*Math.PI-Math.PI/2;d.style.left=(c+Math.cos(a)*rad-29)+'px';d.style.top=(c+Math.sin(a)*rad-29)+'px'; d.onclick=()=>{
     if(modo==='manual'){ d.classList.toggle('off'); return; }
@@ -97,7 +99,35 @@ const r=document.getElementById('ruleta');const c=450,rad=390;orden.forEach((n,i
             x.style.border = '';
         }
     });
-    const lista=gruposActivos[n];
+    let lista;
+
+    if(modo==='10x10'){
+        const total=orden.length;
+        const indice=orden.indexOf(n);
+
+        // Los dos centros quedan a 10 posiciones a cada lado.
+        const centroDerecha=(indice+10)%total;
+        const centroIzquierda=(indice-10+total)%total;
+
+        const construirGrupo=(centro)=>{
+            return [
+                orden[centro],
+                orden[(centro-1+total)%total],
+                orden[(centro-2+total)%total],
+                orden[(centro-3+total)%total],
+                orden[(centro+1)%total],
+                orden[(centro+2)%total]
+            ];
+        };
+
+        lista=[
+            ...construirGrupo(centroIzquierda),
+            ...construirGrupo(centroDerecha)
+        ];
+    }else{
+        lista=gruposActivos[n];
+    }
+
     lista.forEach(numero=>{
         document.querySelectorAll('.num').forEach(casilla=>{
             if(casilla.textContent===numero){
