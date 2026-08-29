@@ -124,6 +124,33 @@ const r=document.getElementById('ruleta');const c=450,rad=390;orden.forEach((n,i
             ...construirGrupo(centroIzquierda),
             ...construirGrupo(centroDerecha)
         ];
+
+        // 12 números adicionales para 10 X10, resaltados en azul.
+        // Primer lado: desde el extremo se dejan 3 normales y se toman los 6 siguientes.
+        const azulesIzquierda=[];
+        for(let paso=7; paso<=12; paso++){
+            azulesIzquierda.push(orden[(centroIzquierda-paso+total)%total]);
+        }
+
+        // Segundo lado: desde el extremo se dejan 4 normales y se toman los 6 siguientes.
+        const azulesDerecha=[];
+        for(let paso=8; paso<=13; paso++){
+            azulesDerecha.push(orden[(centroDerecha-paso+total)%total]);
+        }
+
+        const azules10x10=[...azulesIzquierda,...azulesDerecha];
+
+        azules10x10.forEach(numero=>{
+            document.querySelectorAll('.num').forEach(casilla=>{
+                if(casilla.textContent===numero){
+                    casilla.classList.remove('off');
+                    casilla.classList.add('figuraAzul');
+                    casilla.style.background='#00E5FF';
+                    casilla.style.color='#000';
+                    casilla.style.border='3px solid #0057FF';
+                }
+            });
+        });
     }else{
         lista=gruposActivos[n];
     }
