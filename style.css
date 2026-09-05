@@ -15,7 +15,7 @@ body{margin:0;background:#0b4d2a;font-family:Arial;color:#fff;text-align:center}
     gap:18px;
     padding:0 12px;
 }
-#modo18,#modoManual,#modoFiguras,#modo10x10{
+#modo18,#modoManual,#modo10x10{
     padding:16px 30px;
     margin:0;
     min-width:190px;
@@ -25,9 +25,6 @@ body{margin:0;background:#0b4d2a;font-family:Arial;color:#fff;text-align:center}
     cursor:pointer;
 }
 
-#modoFiguras{
-    background:#87CEEB;
-}
 #modo18{
     background:#FFD700;
 }
