@@ -1,54 +1,143 @@
-body{margin:0;background:#0b4d2a;font-family:Arial;color:#fff;text-align:center}h1{color:gold}#ruleta{width:900px;height:900px;border-radius:50%;margin:20px auto;position:relative;background:#222;border:12px solid gold}.num{position:absolute;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:22px;color:#fff;cursor:pointer}.off{
-    filter:none;
-    opacity:1;
-    background:#FFD700 !important;
-    color:black !important;
-    border:3px solid #ff9800;
+body {
+  margin: 0;
+  padding: 0 12px 24px;
+  box-sizing: border-box;
+  background: #0b4d2a;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  text-align: center;
 }
-
-#modos{
-    margin:20px auto;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:18px;
-    padding:0 12px;
+h1 { color: gold; }
+#calculadora {
+  width: min(620px, 100%);
+  margin: 18px auto;
+  padding: 18px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, .22);
+  border: 1px solid rgba(255, 215, 0, .55);
+  border-radius: 14px;
 }
-#modo18,#modoManual,#modoFiguras,#modo10x10{
-    padding:16px 30px;
-    margin:0;
-    min-width:190px;
-    font-size:22px;
-    font-weight:bold;
-    border-radius:10px;
-    cursor:pointer;
+#calculadora h2 {
+  margin: 0 0 16px;
+  color: #ffd700;
+  font-size: 22px;
 }
-
-#modoFiguras{
-    background:#87CEEB;
+.campos-resultados {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
 }
-#modo18{
-    background:#FFD700;
+.campos-resultados label {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 7px;
+  font-weight: bold;
+  text-align: left;
 }
-#modoManual{
-    background:#ddd;
+.campos-resultados input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 2px solid #d5d5d5;
+  border-radius: 8px;
+  font-size: 22px;
+  text-align: center;
 }
-
-
-#limpiar{
-    display:block;
-    margin:20px auto 30px;
-    width:320px;
-    padding:16px 0;
-    font-size:24px;
-    font-weight:bold;
-    border:none;
-    border-radius:12px;
-    background:#ff5722;
-    color:white;
-    cursor:pointer;
+#procesar {
+  margin-top: 14px;
+  padding: 13px 28px;
+  border: 0;
+  border-radius: 9px;
+  background: #ffd700;
+  color: #111;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
 }
-#limpiar:hover{
-    background:#e64a19;
+#procesar:hover { background: #ffea70; }
+#mensaje { margin: 12px 0 0; }
+#resumen {
+  margin-top: 14px;
+  padding: 12px;
+  background: rgba(0, 0, 0, .24);
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+#resumen p { margin: 7px 0; }
+#modos {
+  margin: 18px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+#modoManual {
+  padding: 14px 25px;
+  min-width: 190px;
+  font-size: 20px;
+  font-weight: bold;
+  border: 0;
+  border-radius: 10px;
+  background: #ddd;
+  color: #111;
+  cursor: pointer;
+}
+#modoManual.seleccionado {
+  background: #87ceeb;
+  outline: 3px solid #fff;
+}
+#ruleta {
+  width: 900px;
+  height: 900px;
+  box-sizing: content-box;
+  border-radius: 50%;
+  margin: 20px auto;
+  position: relative;
+  background: #222;
+  border: 12px solid gold;
+  transform-origin: top center;
+}
+.num {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-weight: bold;
+  font-size: 22px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+.off {
+  filter: none;
+  opacity: 1;
+  background: #ffd700 !important;
+  color: black !important;
+  border: 3px solid #ff9800;
+}
+#limpiar {
+  display: block;
+  margin: 20px auto 30px;
+  width: min(320px, 100%);
+  padding: 16px 0;
+  font-size: 24px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  background: #ff5722;
+  color: white;
+  cursor: pointer;
+}
+#limpiar:hover { background: #e64a19; }
+@media (max-width: 700px) {
+  .campos-resultados { gap: 9px; }
+  #calculadora { padding: 12px; }
+  #calculadora h2 { font-size: 19px; }
+  body { overflow-x: auto; }
 }

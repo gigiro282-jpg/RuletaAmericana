@@ -1,1 +1,44 @@
-<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Ruleta Americana</title><link rel='stylesheet' href='style.css'></head><body><h1>🎰 GIGIRO RULETA</h1><div id='modos'><button id='modo18'>🎯 Modo 18</button><button id='modoManual'>✋ Modo Manual</button><button id='modo10x10'>🔟 10 X10</button></div><div id='ruleta'></div><button id='limpiar'>Limpiar todo</button><script src='script.js'></script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GIGIRO RULETA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🎰 GIGIRO RULETA</h1>
+
+  <section id="calculadora" aria-label="Calculadora de jugada">
+    <h2>Nueva función · Cálculo por dos resultados</h2>
+    <div class="campos-resultados">
+      <label for="resultadoAnterior">
+        Resultado anterior
+        <input id="resultadoAnterior" type="text" inputmode="numeric" autocomplete="off" maxlength="2" placeholder="Ej. 2">
+      </label>
+      <label for="ultimoResultado">
+        Último resultado
+        <input id="ultimoResultado" type="text" inputmode="numeric" autocomplete="off" maxlength="2" placeholder="Ej. 5">
+      </label>
+    </div>
+    <button id="procesar" type="button">PROCESAR</button>
+    <p id="mensaje" role="status" aria-live="polite">Ingresa los dos resultados y pulsa PROCESAR o Enter.</p>
+    <div id="resumen" hidden>
+      <p><strong>Desplazamiento:</strong> <span id="desplazamiento">—</span> posiciones</p>
+      <p><strong>Número base:</strong> <span id="numeroBase">—</span></p>
+      <p><strong>12 números excluidos:</strong></p>
+      <p id="excluidos"></p>
+      <p><strong>Números resaltados:</strong> 26</p>
+    </div>
+  </section>
+
+  <div id="modos">
+    <button id="modoManual" type="button" aria-pressed="false">✋ Modo Manual</button>
+  </div>
+
+  <div id="ruleta" aria-label="Cilindro de ruleta americana"></div>
+  <button id="limpiar" type="button">Borrar todo</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
