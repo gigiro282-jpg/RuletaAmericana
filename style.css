@@ -73,6 +73,7 @@ h1 { color: gold; }
   flex-wrap: wrap;
   gap: 14px;
 }
+#modoBET,
 #modoManual {
   padding: 14px 25px;
   min-width: 190px;
@@ -84,6 +85,7 @@ h1 { color: gold; }
   color: #111;
   cursor: pointer;
 }
+#modoBET.seleccionado,
 #modoManual.seleccionado {
   background: #87ceeb;
   outline: 3px solid #fff;

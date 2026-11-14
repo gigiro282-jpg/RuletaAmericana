@@ -1,121 +1,90 @@
-// GIGIRO RULETA - Calculadora por dos resultados
-// Orden físico del cilindro americano en sentido de las manecillas del reloj.
-const orden = [
-  '0','28','9','26','30','11','7','20','32','17','5','22','34','15','3','24','36','13','1','00',
-  '27','10','25','29','12','8','19','31','18','6','21','33','16','4','23','35','14','2'
-];
+// GIGIRO RULETA - BET y Modo Manual
+const orden = ['0','28','9','26','30','11','7','20','32','17','5','22','34','15','3','24','36','13','1','00','27','10','25','29','12','8','19','31','18','6','21','33','16','4','23','35','14','2'];
+const rojos = new Set(['1','3','5','7','9','12','14','16','18','19','21','23','25','27','30','32','34','36']);
 
-const rojos = new Set([
-  '1','3','5','7','9','12','14','16','18','19','21','23','25','27','30','32','34','36'
-]);
+// Una línea por resultado. Se usan las correcciones del usuario para 28 y 29.
+const datosBET = `
+00: 14,2,0,28,9,17,5,22,19,8,12,29,25,10,27,00,1,13
+0: 14,2,0,28,9,7,20,32,17,5,22,34,36,13,1,00,27,10
+1: 35,14,2,0,28,32,17,5,22,34,36,13,1,00,27,6,18,31
+2: 14,2,0,28,9,7,20,32,17,5,22,34,36,13,1,00,27,10
+3: 28,9,26,30,11,34,15,3,24,36,18,6,21,33,16,4,23,35
+4: 28,9,26,30,11,3,24,36,13,1,00,6,21,33,16,4,23,35
+5: 14,2,0,32,17,5,22,34,36,13,1,00,27,18,6,21,23,35
+6: 0,28,9,26,30,11,17,5,22,33,21,6,18,31,00,1,13,36
+7: 2,0,28,9,26,30,11,7,20,32,33,16,4,31,19,8,12,29
+8: 9,26,30,11,7,20,3,24,36,13,1,00,27,29,12,8,19,31
+9: 0,28,9,26,30,11,7,15,3,24,21,6,18,31,19,8,12,29
+10: 0,28,9,26,30,11,4,16,33,21,6,29,25,10,27,00,1,13
+11: 28,9,26,30,11,7,20,34,15,3,10,25,29,12,8,21,33,16
+12: 26,30,11,7,20,34,15,3,24,36,25,29,12,8,19,6,21,33
+13: 00,1,13,36,24,32,17,5,31,19,8,4,23,35,14,2,16,33
+14: 00,1,13,36,24,20,32,17,5,22,34,28,9,35,23,14,2,0
+15: 28,9,26,30,11,22,34,15,3,24,36,13,1,21,33,16,4,23
+16: 7,20,32,17,5,22,34,15,3,24,36,25,29,12,8,19,21,33
+17: 00,1,13,36,20,32,17,5,22,34,18,6,21,33,16,4,23,35
+18: 0,28,9,26,32,17,5,24,36,13,1,00,27,19,31,18,6,21
+19: 0,28,9,11,7,20,32,17,3,24,36,13,1,12,8,19,31,18
+20: 0,28,11,7,20,32,17,5,22,34,12,8,19,31,18,35,14,2
+21: 36,13,1,00,27,10,25,29,18,6,21,33,16,4,23,35,14,2
+22: 0,28,7,20,32,17,5,22,34,15,18,6,21,33,16,35,14,2
+23: 20,32,17,5,22,3,24,36,10,25,29,12,16,4,23,35,14,2
+24: 0,28,9,26,15,3,24,36,13,31,19,8,16,4,23,35,14,2
+25: 9,26,30,22,34,15,00,27,10,25,29,12,21,33,16,4,23,35
+26: 0,28,9,26,30,11,34,15,3,25,29,12,31,18,6,21,33,23
+27: 0,28,9,26,24,36,13,1,00,27,10,25,19,31,18,6,21,2
+28: 2,0,28,9,26,3,24,36,13,1,00,27,10,8,19,31,18,6
+29: 28,9,26,30,11,7,20,34,15,3,10,25,29,12,8,21,33,16
+30: 9,26,30,11,7,22,34,15,3,24,10,25,29,12,8,18,21,23
+31: 0,28,9,26,32,17,3,24,36,13,1,00,27,10,25,29,12,8
+32: 26,30,11,7,20,32,17,5,6,18,31,19,8,4,23,35,14,2
+33: 5,22,34,15,3,24,36,13,1,00,27,10,25,29,12,8,19,31
+34: 5,22,34,15,3,24,36,13,1,00,27,10,25,29,12,8,19,31
+35: 5,22,34,15,3,24,36,13,1,00,27,10,25,29,12,8,19,31
+36: 18,31,19,8,12,29,25,10,27,00,1,13,36,24,3,15,34,22
+`;
+const combinacionesBET = Object.fromEntries(datosBET.trim().split('\n').map(linea => {
+  const [resultado, lista] = linea.split(':');
+  return [resultado.trim(), lista.split(',').map(n => n.trim())];
+}));
 
 const ruleta = document.getElementById('ruleta');
-const campoAnterior = document.getElementById('resultadoAnterior');
-const campoUltimo = document.getElementById('ultimoResultado');
-const botonProcesar = document.getElementById('procesar');
+const botonBET = document.getElementById('modoBET');
 const botonManual = document.getElementById('modoManual');
 const botonLimpiar = document.getElementById('limpiar');
 const mensaje = document.getElementById('mensaje');
-const resumen = document.getElementById('resumen');
-const salidaDesplazamiento = document.getElementById('desplazamiento');
-const salidaBase = document.getElementById('numeroBase');
-const salidaExcluidos = document.getElementById('excluidos');
-
+let modoBET = false;
 let modoManual = false;
 
 function restaurarColores() {
-  document.querySelectorAll('.num').forEach(casilla => {
-    casilla.classList.remove('off', 'manual-activo');
-    casilla.style.background = casilla.dataset.baseColor;
-    casilla.style.color = '#fff';
-    casilla.style.border = '';
-  });
+  document.querySelectorAll('.num').forEach(casilla => casilla.classList.remove('off'));
 }
-
 function resaltarNumeros(numeros) {
   restaurarColores();
   const conjunto = new Set(numeros);
   document.querySelectorAll('.num').forEach(casilla => {
-    if (!conjunto.has(casilla.textContent)) return;
-    casilla.classList.add('off');
+    if (conjunto.has(casilla.dataset.numero)) casilla.classList.add('off');
   });
 }
-
-function normalizarNumero(valor) {
-  const n = String(valor).trim();
-  if (n === '00' || n === '0') return n;
-  if (!/^(?:[1-9]|[12][0-9]|3[0-6])$/.test(n)) return null;
-  return n;
-}
-
-// Cuenta los pasos desde el resultado anterior hasta el último en sentido
-// contrario a las manecillas del reloj. La casilla inicial es posición cero.
-function calcularJugada(anterior, ultimo) {
-  const total = orden.length;
-  const indiceAnterior = orden.indexOf(anterior);
-  const indiceUltimo = orden.indexOf(ultimo);
-
-  // En el arreglo, el sentido antihorario retrocede índices.
-  const desplazamiento = (indiceAnterior - indiceUltimo + total) % total;
-
-  // Repetimos ese mismo desplazamiento desde el último resultado.
-  const indiceBase = (indiceUltimo - desplazamiento + total * 2) % total;
-  const base = orden[indiceBase];
-
-  const excluidos = [];
-  // Seis puertas antihorarias desde la base (la base no cuenta como puerta).
-  for (let paso = 1; paso <= 6; paso++) {
-    excluidos.push(orden[(indiceBase - paso + total) % total]);
-  }
-  // El número base.
-  excluidos.push(base);
-  // Cinco puertas horarias desde la base.
-  for (let paso = 1; paso <= 5; paso++) {
-    excluidos.push(orden[(indiceBase + paso) % total]);
-  }
-
-  const excluidosUnicos = new Set(excluidos);
-  const resaltados = orden.filter(numero => !excluidosUnicos.has(numero));
-
-  return { desplazamiento, base, excluidos, resaltados };
-}
-
-function procesar() {
-  const anterior = normalizarNumero(campoAnterior.value);
-  const ultimo = normalizarNumero(campoUltimo.value);
-
-  if (anterior === null || ultimo === null) {
-    mensaje.textContent = 'Número no válido. Ingresa 0, 00 o un número del 1 al 36 en ambos campos.';
-    resumen.hidden = true;
-    return;
-  }
-
-  modoManual = false;
-  actualizarBotonManual();
-  const resultado = calcularJugada(anterior, ultimo);
-  resaltarNumeros(resultado.resaltados);
-
-  salidaDesplazamiento.textContent = resultado.desplazamiento;
-  salidaBase.textContent = resultado.base;
-  salidaExcluidos.textContent = resultado.excluidos.join(' · ');
-  resumen.hidden = false;
-  mensaje.textContent = 'Cálculo realizado. Se resaltaron los 26 números que no están excluidos.';
-}
-
-function actualizarBotonManual() {
+function actualizarBotones() {
+  botonBET.setAttribute('aria-pressed', String(modoBET));
+  botonBET.classList.toggle('seleccionado', modoBET);
+  botonBET.textContent = modoBET ? '🎯 BET ACTIVADO' : '🎯 BET';
   botonManual.setAttribute('aria-pressed', String(modoManual));
   botonManual.classList.toggle('seleccionado', modoManual);
   botonManual.textContent = modoManual ? '✋ Modo Manual ACTIVADO' : '✋ Modo Manual';
 }
-
+function activarBET(resultado) {
+  const numeros = combinacionesBET[resultado];
+  resaltarNumeros(numeros);
+  mensaje.textContent = `BET para el resultado ${resultado}: ${numeros.length} números resaltados.`;
+}
 function limpiarTodo() {
   restaurarColores();
-  campoAnterior.value = '';
-  campoUltimo.value = '';
-  resumen.hidden = true;
-  mensaje.textContent = 'Ingresa los dos resultados y pulsa PROCESAR o Enter.';
+  modoBET = false;
   modoManual = false;
-  actualizarBotonManual();
+  actualizarBotones();
+  mensaje.textContent = 'Selecciona BET o Modo Manual para comenzar.';
 }
 
 const centro = 450;
@@ -125,59 +94,47 @@ orden.forEach((numero, indice) => {
   casilla.className = 'num';
   casilla.textContent = numero;
   casilla.dataset.numero = numero;
-  casilla.style.background = (numero === '0' || numero === '00')
-    ? 'green'
-    : (rojos.has(numero) ? '#c40000' : 'black');
-  casilla.dataset.baseColor = casilla.style.background;
-
+  casilla.style.background = (numero === '0' || numero === '00') ? 'green' : (rojos.has(numero) ? '#c40000' : 'black');
   const angulo = indice / orden.length * 2 * Math.PI - Math.PI / 2;
   casilla.style.left = `${centro + Math.cos(angulo) * radio - 29}px`;
   casilla.style.top = `${centro + Math.sin(angulo) * radio - 29}px`;
-
   casilla.addEventListener('click', () => {
-    if (!modoManual) return;
-    casilla.classList.toggle('off');
+    if (modoBET) activarBET(numero);
+    else if (modoManual) casilla.classList.toggle('off');
   });
-
   ruleta.appendChild(casilla);
 });
 
-botonProcesar.addEventListener('click', procesar);
-[campoAnterior, campoUltimo].forEach(campo => {
-  campo.addEventListener('keydown', evento => {
-    if (evento.key === 'Enter') {
-      evento.preventDefault();
-      procesar();
-    }
-  });
+botonBET.addEventListener('click', () => {
+  modoBET = !modoBET;
+  if (modoBET) {
+    modoManual = false;
+    restaurarColores();
+    mensaje.textContent = 'BET activado: toca el resultado que acaba de salir para resaltar su combinación de 18 números.';
+  } else mensaje.textContent = 'BET desactivado.';
+  actualizarBotones();
 });
-
 botonManual.addEventListener('click', () => {
   modoManual = !modoManual;
-  actualizarBotonManual();
-  mensaje.textContent = modoManual
-    ? 'Modo Manual activado: toca los números de la ruleta para resaltarlos o quitarles el resaltado.'
-    : 'Modo Manual desactivado.';
+  if (modoManual) {
+    modoBET = false;
+    restaurarColores();
+    mensaje.textContent = 'Modo Manual activado: toca los números para resaltarlos o quitarles el resaltado individualmente.';
+  } else mensaje.textContent = 'Modo Manual desactivado.';
+  actualizarBotones();
 });
-
 botonLimpiar.addEventListener('click', limpiarTodo);
 
-// Estado inicial.
-actualizarBotonManual();
-
-// Comprobaciones del algoritmo (no modifican la interfaz).
-function validarAlgoritmo() {
-  if (orden.length !== 38 || new Set(orden).size !== 38) {
-    throw new Error('El orden del cilindro debe contener 38 números únicos.');
+function validarBET() {
+  if (orden.length !== 38 || new Set(orden).size !== 38 || Object.keys(combinacionesBET).length !== 38) {
+    throw new Error('La ruleta y la tabla BET deben contener los 38 resultados.');
   }
-  for (const anterior of orden) {
-    for (const ultimo of orden) {
-      const r = calcularJugada(anterior, ultimo);
-      if (r.excluidos.length !== 12 || new Set(r.excluidos).size !== 12 ||
-          r.resaltados.length !== 26 || r.excluidos.length + r.resaltados.length !== 38) {
-        throw new Error(`Error en la pareja ${anterior}-${ultimo}`);
-      }
+  for (const resultado of orden) {
+    const numeros = combinacionesBET[resultado];
+    if (!numeros || numeros.length !== 18 || new Set(numeros).size !== 18 || numeros.some(n => !orden.includes(n))) {
+      throw new Error(`La combinación BET del resultado ${resultado} no contiene 18 números únicos válidos.`);
     }
   }
 }
-validarAlgoritmo();
+actualizarBotones();
+validarBET();
